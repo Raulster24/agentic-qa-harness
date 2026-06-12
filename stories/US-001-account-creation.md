@@ -9,6 +9,15 @@
 - Application under test: Ghostfolio, served at the configured base URL
 - Ghostfolio issues a one-time security token at account creation instead of a password
 
+## Application map
+
+The tester is given the basic navigation up front, as a real tester would be:
+
+- Landing page: `/en/start` (the base URL redirects here)
+- Account creation: `/en/register`, then a "Create Account" button opens a dialog
+- Sign in: there is no sign-in URL; the header "Sign in" button opens a dialog
+- Sign out: via the account/avatar menu in the header, not a URL
+
 ## Acceptance criteria
 
 1. From the landing page, a visitor can start the account creation flow.
