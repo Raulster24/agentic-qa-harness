@@ -1,0 +1,81 @@
+# Regression gate: the deterministic check that lets a team deploy daily.
+#
+# This is the deployment gate. On every pull request and every push to main, the
+# approved Playwright suite runs against a freshly built system under test. The
+# suite is sharded across runners so a regression pass that took 3-4 days by hand
+# completes in minutes, in parallel, with no human in the loop. No LLM runs here:
+# the agents did their work at authoring time; CI just executes plain specs.
+#
+# A red run blocks the merge (and therefore the deploy). A green run is the
+# evidence a daily release needs.
+
+name: Regression gate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# A newer push to the same branch cancels the older run: daily cadence means we
+# care about the latest commit, not a backlog of stale ones.
+concurrency:
+  group: regression-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  regression:
+    name: regression (shard ${{ matrix.shard }}/${{ strategy.job-total }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Start the system under test
+        run: |
+          docker compose -f sut/docker-compose.yml up -d
+          echo "Waiting for Ghostfolio to become healthy..."
+          for i in $(seq 1 60); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3333/api/v1/health || true)
+            if [ "$code" = "200" ]; then echo "Healthy after ${i} checks"; break; fi
+            sleep 5
+          done
+
+      - name: Run approved regression suite (this shard)
+        run: npx playwright test tests/approved --shard=${{ matrix.shard }}/4
+        env:
+          CI: "true"
+          SUT_BASE_URL: http://localhost:3333
+
+      - name: Upload report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-shard-${{ matrix.shard }}
+          path: playwright-report/
+          retention-days: 7
+
+      - name: Stop the system under test
+        if: always()
+        run: docker compose -f sut/docker-compose.yml down
