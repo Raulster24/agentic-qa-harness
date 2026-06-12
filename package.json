@@ -1,0 +1,27 @@
+{
+  "name": "agentic-qa-harness",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Agent-authored, human-gated Playwright regression suite. Agents author, triage, and maintain tests; CI runs deterministic specs.",
+  "scripts": {
+    "author": "tsx agents/src/authoring-agent.ts",
+    "smoke": "tsx agents/src/smoke-mcp.ts",
+    "test:proposed": "playwright test tests/proposed",
+    "test:approved": "playwright test tests/approved",
+    "sut:up": "docker compose -f sut/docker-compose.yml up -d",
+    "sut:down": "docker compose -f sut/docker-compose.yml down",
+    "sut:logs": "docker compose -f sut/docker-compose.yml logs -f ghostfolio"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "dotenv": "^16.4.5",
+    "openai": "^4.100.0"
+  },
+  "devDependencies": {
+    "@playwright/mcp": "^0.0.29",
+    "@playwright/test": "^1.52.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}
