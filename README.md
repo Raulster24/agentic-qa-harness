@@ -12,14 +12,19 @@ A regression cycle that takes 3 to 4 days does not take that long because the te
 ## Architecture
 
 ```
-stories/*.md ──▶ authoring agent ──▶ tests/proposed/ ──▶ human review ──▶ tests/approved/ ──▶ CI
-                 (Azure OpenAI                                                              (plain Playwright,
-                  + Playwright MCP)                                                          no LLM involved)
+stories/*.md ─▶ author ─▶ critic ─▶ verify & self-heal ─▶ tests/proposed/ ─▶ human review ─▶ tests/approved/ ─▶ CI
+                (Claude + Playwright MCP)                                                          (plain Playwright,
+                                                                                                    no LLM involved)
+
+CI failure ─▶ triage agent ─▶ product bug (issue) | test rot (patch PR) | flake (rerun)
 ```
 
 - **Authoring agent** (`agents/src/authoring-agent.ts`): takes a user story with acceptance criteria, explores the live application through the official Playwright MCP server, grounding every locator in observed accessibility snapshots, then emits a deterministic spec plus a criterion-to-test coverage map into `tests/proposed/`.
+- **Critic agent** (`agents/src/critic.ts`): a second model reviews the draft against quality rules and coverage before it is executed.
+- **Verify and self-heal** (`agents/src/pipeline.ts`): runs the draft against the live app and feeds any failure back so the agent fixes its own runtime mistakes.
+- **Triage agent** (`agents/src/triage.ts`): on a failure, reproduces the step on the live app and classifies it as product bug, test rot, or flake, then writes the matching artifact (issue draft or patched spec).
 - **System under test**: [Ghostfolio](https://github.com/ghostfolio/ghostfolio), an open source wealth management application (portfolio dashboard, holdings, allocations), run locally via Docker.
-- **Model layer**: chat completions with tool calling, Azure OpenAI or plain OpenAI selected purely by configuration. The endpoint, deployment, and API version are environment variables, not code.
+- **Model layer**: the official Anthropic SDK with a manual agentic tool-use loop. The model is an environment variable (`ANTHROPIC_MODEL`), not code.
 
 ## Quickstart
 
@@ -31,20 +36,23 @@ npm run sut:up          # serves http://localhost:3333
 npm install
 npx playwright install chromium
 
-# 3. Configure the model provider (Azure OpenAI or plain OpenAI)
-cp .env.example .env    # fill in one provider block
+# 3. Configure the model (Anthropic API key)
+cp .env.example .env    # fill in ANTHROPIC_API_KEY
 
-# 4. Verify the browser/MCP path without spending tokens
-npm run smoke
+# 4. Verify the key and the browser/MCP path
+npm run smoke:llm       # cheap key + model check
+npm run smoke           # browser/MCP check (no tokens)
 
-# 5. Let the agent author a spec from a user story
-npm run author -- stories/US-001-account-creation.md
+# 5. Run the full pipeline: author, critic, verify, self-heal
+npm run pipeline -- stories/US-001-account-creation.md
 
-# 6. Review the proposed spec and coverage map, then run it
-npm run test:proposed
+# 6. Review the proposed spec, then promote it to tests/approved by hand (the gate)
+
+# 7. Triage a failing spec (classify bug vs rot vs flake, write the fix/issue)
+npm run triage -- tests/proposed/<some>.spec.ts
 ```
 
-Set `HEADLESS=0` in `.env` to watch the agent drive the browser.
+Set `HEADLESS=0` in `.env` to watch the agent drive the browser. Set `ANTHROPIC_MODEL=claude-sonnet-4-6` for a faster, lower-cost run.
 
 ## Status
 
@@ -52,12 +60,13 @@ Set `HEADLESS=0` in `.env` to watch the agent drive the browser.
 | --- | --- |
 | SUT (Ghostfolio via docker compose) | working |
 | Authoring agent (story to proposed spec, with coverage map) | working |
-| Human review gate (draft in proposed, verified + corrected into approved) | working: US-001, 4/4 passing |
-| Critic agent (reviews generated specs against quality rules before proposal) | planned |
+| Critic agent (reviews drafts against quality rules before execution) | working |
+| Verify and self-heal loop (runs the draft, feeds failures back) | working |
+| Human review gate (proposed to approved) | working: US-001 5/5, US-002 4/4 |
+| CI deploy gate (sharded Playwright on PR and push) | working |
+| Triage agent (product bug vs test rot vs flake; writes issue or patch) | working |
 | HITL gate automation (promotion via PR + CODEOWNERS) | planned |
-| Triage agent (classifies CI failures: product bug vs test rot vs flake; self-heals rot via patch PR) | planned |
 | Chat response evals (DeepEval; golden set, faithfulness, semantic comparison) | planned |
-| CI pipeline (GitHub Actions: sharded regression on PR, eval gate) | planned |
 
 ## Spec quality rules enforced on the agent
 
