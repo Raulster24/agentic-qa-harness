@@ -20,10 +20,10 @@ await main();
 
 async function main(): Promise<void> {
   console.log(`▶ Authoring agent starting for ${storyPath}`);
-  console.log(`▶ Target app: ${config.sutBaseUrl} | model: ${config.llm.model} (${config.llm.provider})`);
+  console.log(`▶ Target app: ${config.sutBaseUrl} | model: ${config.anthropic.model}`);
 
   const mcp = await startPlaywrightMcp();
-  console.log(`▶ Playwright MCP connected (${mcp.openAiTools.length} browser tools)`);
+  console.log(`▶ Playwright MCP connected (${mcp.tools.length} browser tools)`);
   const llm = createLlmClient();
 
   const session = createAgentSession(llm, mcp, authoringSystemPrompt(config.sutBaseUrl));

@@ -6,7 +6,10 @@
   "description": "Agent-authored, human-gated Playwright regression suite. Agents author, triage, and maintain tests; CI runs deterministic specs.",
   "scripts": {
     "author": "tsx agents/src/authoring-agent.ts",
+    "pipeline": "tsx agents/src/pipeline.ts",
+    "triage": "tsx agents/src/triage-cli.ts",
     "smoke": "tsx agents/src/smoke-mcp.ts",
+    "smoke:llm": "tsx agents/src/smoke-llm.ts",
     "test:proposed": "playwright test tests/proposed",
     "test:approved": "playwright test tests/approved",
     "sut:up": "docker compose -f sut/docker-compose.yml up -d",
@@ -14,6 +17,7 @@
     "sut:logs": "docker compose -f sut/docker-compose.yml logs -f ghostfolio"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.104.1",
     "@modelcontextprotocol/sdk": "^1.12.0",
     "dotenv": "^16.4.5",
     "openai": "^4.100.0"

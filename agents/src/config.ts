@@ -9,25 +9,14 @@ function required(name: string): string {
   return value;
 }
 
-// Azure OpenAI when an endpoint is configured (target deployment environment),
-// otherwise plain OpenAI (local development). Same chat-completions surface.
-const useAzure = Boolean(process.env.AZURE_OPENAI_ENDPOINT);
-
 export const config = {
-  llm: useAzure
-    ? {
-        provider: "azure" as const,
-        endpoint: required("AZURE_OPENAI_ENDPOINT"),
-        apiKey: required("AZURE_OPENAI_API_KEY"),
-        model: required("AZURE_OPENAI_DEPLOYMENT"),
-        apiVersion: process.env.AZURE_OPENAI_API_VERSION ?? "2024-10-21"
-      }
-    : {
-        provider: "openai" as const,
-        apiKey: required("OPENAI_API_KEY"),
-        model: process.env.OPENAI_MODEL ?? "gpt-4.1"
-      },
+  anthropic: {
+    apiKey: required("ANTHROPIC_API_KEY"),
+    // Default to the most capable model. Set ANTHROPIC_MODEL=claude-sonnet-4-6
+    // for a faster, lower-cost run of this high-volume agentic loop.
+    model: process.env.ANTHROPIC_MODEL ?? "claude-opus-4-8"
+  },
   sutBaseUrl: process.env.SUT_BASE_URL ?? "http://localhost:3333",
   headless: process.env.HEADLESS !== "0",
-  maxTurns: Number(process.env.MAX_AGENT_TURNS ?? 40)
+  maxTurns: Number(process.env.MAX_AGENT_TURNS ?? 60)
 };

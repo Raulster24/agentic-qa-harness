@@ -4,8 +4,8 @@ import { config } from "./config.js";
 import { startPlaywrightMcp } from "./mcp.js";
 
 const mcp = await startPlaywrightMcp();
-console.log(`MCP tools available: ${mcp.openAiTools.length}`);
-console.log(mcp.openAiTools.map((tool) => tool.function.name).join(", "));
+console.log(`MCP tools available: ${mcp.tools.length}`);
+console.log(mcp.tools.map((tool) => tool.name).join(", "));
 
 const nav = await mcp.callTool("browser_navigate", { url: config.sutBaseUrl });
 console.log("\n--- snapshot right after navigate (often empty on SPA first paint) ---");

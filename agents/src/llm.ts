@@ -1,19 +1,10 @@
-import OpenAI, { AzureOpenAI } from "openai";
+import Anthropic from "@anthropic-ai/sdk";
 import { config } from "./config.js";
 
-// maxRetries: agent sessions hit per-minute token limits in normal operation;
-// 429s are pacing signals, not failures. The SDK honors retry-after.
+// maxRetries: agentic loops can brush per-minute limits in normal operation.
+// The SDK retries 429 and 5xx with exponential backoff, honoring retry-after.
 const MAX_RETRIES = 8;
 
-export function createLlmClient(): OpenAI {
-  if (config.llm.provider === "azure") {
-    return new AzureOpenAI({
-      endpoint: config.llm.endpoint,
-      apiKey: config.llm.apiKey,
-      apiVersion: config.llm.apiVersion,
-      deployment: config.llm.model,
-      maxRetries: MAX_RETRIES
-    });
-  }
-  return new OpenAI({ apiKey: config.llm.apiKey, maxRetries: MAX_RETRIES });
+export function createLlmClient(): Anthropic {
+  return new Anthropic({ apiKey: config.anthropic.apiKey, maxRetries: MAX_RETRIES });
 }
