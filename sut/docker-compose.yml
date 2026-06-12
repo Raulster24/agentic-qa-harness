@@ -1,0 +1,51 @@
+# System under test: Ghostfolio (open-source wealth management app)
+# Dev-only credentials below are intentional; this stack never leaves localhost.
+name: agentic-qa-sut
+
+services:
+  ghostfolio:
+    image: docker.io/ghostfolio/ghostfolio:latest
+    init: true
+    environment:
+      NODE_ENV: production
+      ACCESS_TOKEN_SALT: dev-only-salt-not-for-production
+      JWT_SECRET_KEY: dev-only-jwt-secret-not-for-production
+      # sslmode=disable: the bundled postgres container has no TLS; Prisma's pg
+      # adapter fails hard on sslmode=prefer against a non-TLS server.
+      DATABASE_URL: postgresql://ghostfolio:dev-only-password@postgres:5432/ghostfolio?connect_timeout=300&sslmode=disable
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      REDIS_PASSWORD: dev-only-redis-password
+    ports:
+      - "3333:3333"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  postgres:
+    image: docker.io/library/postgres:15-alpine
+    environment:
+      POSTGRES_DB: ghostfolio
+      POSTGRES_USER: ghostfolio
+      POSTGRES_PASSWORD: dev-only-password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ghostfolio -d ghostfolio"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+  redis:
+    image: docker.io/library/redis:7-alpine
+    command: ["redis-server", "--requirepass", "dev-only-redis-password"]
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a dev-only-redis-password ping | grep PONG"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+volumes:
+  postgres:
