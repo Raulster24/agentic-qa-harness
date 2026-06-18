@@ -1,0 +1,180 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1460" height="1180" viewBox="0 0 1460 1180" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,3 L0,6 Z" fill="#334155"/></marker>
+    <marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,3 L0,6 Z" fill="#b91c1c"/></marker>
+    <marker id="ay" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,3 L0,6 Z" fill="#ca8a04"/></marker>
+    <style>
+      .title{font-size:25px;font-weight:700;fill:#0f172a}
+      .sub{font-size:13.5px;fill:#475569}
+      .pill{font-size:11px;font-weight:700;fill:#fff}
+      .ph{font-size:13px;font-weight:700;fill:#1e293b}
+      .lbl{font-size:15px;font-weight:600;fill:#0f172a}
+      .lbls{font-size:11px;fill:#475569}
+      .e{stroke:#334155;stroke-width:2;fill:none}
+      .er{stroke:#b91c1c;stroke-width:2;fill:none}
+      .ey{stroke:#ca8a04;stroke-width:2.2;fill:none}
+      .note{font-size:11px;font-style:italic;fill:#64748b}
+    </style>
+  </defs>
+  <rect width="1460" height="1180" fill="#f8fafc"/>
+  <text x="40" y="46" class="title">agentic-qa-harness — cold-start / bootstrapping pipeline (first-time E2E for a new app)</text>
+  <text x="40" y="72" class="sub">Build the framework bottom-up: explore → pilot a few journeys → EXTRACT the POM/fixtures from what repeats. Don't speculate a POM top-down.</text>
+
+  <!-- INPUT -->
+  <rect x="40" y="100" width="220" height="92" rx="11" fill="#fff" stroke="#94a3b8"/>
+  <text x="150" y="130" text-anchor="middle" class="lbl">New application</text>
+  <text x="150" y="152" text-anchor="middle" class="lbls">running SUT, no test infra,</text>
+  <text x="150" y="168" text-anchor="middle" class="lbls">no POM, no fixtures,</text>
+  <text x="150" y="184" text-anchor="middle" class="lbls">no locator contract</text>
+
+  <!-- ============ PHASE 0: SURVEYOR ============ -->
+  <rect x="300" y="98" width="1120" height="172" rx="14" fill="#eef2ff" stroke="#c7d2fe"/>
+  <rect x="316" y="112" width="360" height="22" rx="11" fill="#6366f1"/>
+  <text x="328" y="128" class="pill">PHASE 0 — SURVEYOR AGENT  ·  discover the app (LLM + MCP)</text>
+
+  <rect x="316" y="148" width="250" height="104" rx="9" fill="#e0e7ff" stroke="#6366f1"/>
+  <text x="441" y="172" text-anchor="middle" class="lbl">Crawl &amp; map</text>
+  <text x="441" y="192" text-anchor="middle" class="lbls">page/screen inventory,</text>
+  <text x="441" y="207" text-anchor="middle" class="lbls">navigation graph,</text>
+  <text x="441" y="222" text-anchor="middle" class="lbls">a11y tree per screen</text>
+  <text x="441" y="240" text-anchor="middle" class="lbls">→ application model</text>
+
+  <rect x="582" y="148" width="250" height="104" rx="9" fill="#e0e7ff" stroke="#6366f1"/>
+  <text x="707" y="172" text-anchor="middle" class="lbl">Cluster components</text>
+  <text x="707" y="192" text-anchor="middle" class="lbls">find widgets that repeat</text>
+  <text x="707" y="207" text-anchor="middle" class="lbls">across screens (button,</text>
+  <text x="707" y="222" text-anchor="middle" class="lbls">table, modal, nav)</text>
+  <text x="707" y="240" text-anchor="middle" class="lbls">→ component candidates</text>
+
+  <rect x="848" y="148" width="250" height="104" rx="9" fill="#e0e7ff" stroke="#6366f1"/>
+  <text x="973" y="172" text-anchor="middle" class="lbl">Observe network</text>
+  <text x="973" y="192" text-anchor="middle" class="lbls">capture XHR/fetch behind</text>
+  <text x="973" y="207" text-anchor="middle" class="lbls">the happy path</text>
+  <text x="973" y="222" text-anchor="middle" class="lbls">→ API surface for</text>
+  <text x="973" y="240" text-anchor="middle" class="lbls">set-up-via-API fixtures</text>
+
+  <rect x="1114" y="148" width="290" height="104" rx="9" fill="#fff7ed" stroke="#fb923c"/>
+  <text x="1259" y="172" text-anchor="middle" class="lbl">Testability report</text>
+  <text x="1259" y="192" text-anchor="middle" class="lbls">controls with no accessible</text>
+  <text x="1259" y="207" text-anchor="middle" class="lbls">name / role → list of</text>
+  <text x="1259" y="222" text-anchor="middle" class="lbls">data-testid / label asks</text>
+  <text x="1259" y="240" text-anchor="middle" class="note">agent can't fix testability itself</text>
+
+  <!-- ============ PHASE 1: ARCHITECT ============ -->
+  <rect x="40" y="290" width="1380" height="196" rx="14" fill="#eef2ff" stroke="#c7d2fe"/>
+  <rect x="56" y="304" width="430" height="22" rx="11" fill="#6366f1"/>
+  <text x="68" y="320" class="pill">PHASE 1 — FRAMEWORK ARCHITECT AGENT  ·  scaffold the foundation (proposed)</text>
+  <text x="900" y="320" class="note">thin opinionated skeleton up front so output isn't chaos</text>
+
+  <rect x="56"  y="340" width="250" height="128" rx="9" fill="#e0e7ff" stroke="#6366f1"/>
+  <text x="181" y="364" text-anchor="middle" class="lbl">Locator contract</text>
+  <text x="181" y="386" text-anchor="middle" class="lbls">role/label-first if a11y</text>
+  <text x="181" y="401" text-anchor="middle" class="lbls">is good; else propose</text>
+  <text x="181" y="416" text-anchor="middle" class="lbls">data-testid convention</text>
+  <text x="181" y="438" text-anchor="middle" class="lbls">+ project skeleton,</text>
+  <text x="181" y="453" text-anchor="middle" class="lbls">playwright.config, folders</text>
+
+  <rect x="322" y="340" width="250" height="128" rx="9" fill="#e0e7ff" stroke="#6366f1"/>
+  <text x="447" y="364" text-anchor="middle" class="lbl">Page objects</text>
+  <text x="447" y="386" text-anchor="middle" class="lbls">one per screen,</text>
+  <text x="447" y="401" text-anchor="middle" class="lbls">thin: locators +</text>
+  <text x="447" y="416" text-anchor="middle" class="lbls">atomic actions,</text>
+  <text x="447" y="438" text-anchor="middle" class="lbls">grounded in observed</text>
+  <text x="447" y="453" text-anchor="middle" class="lbls">snapshots</text>
+
+  <rect x="588" y="340" width="250" height="128" rx="9" fill="#e0e7ff" stroke="#6366f1"/>
+  <text x="713" y="364" text-anchor="middle" class="lbl">Component objects</text>
+  <text x="713" y="386" text-anchor="middle" class="lbls">design-system widgets</text>
+  <text x="713" y="401" text-anchor="middle" class="lbls">from the clusters:</text>
+  <text x="713" y="416" text-anchor="middle" class="lbls">DataTable, Modal,</text>
+  <text x="713" y="438" text-anchor="middle" class="lbls">NavBar, FormField</text>
+
+  <rect x="854" y="340" width="250" height="128" rx="9" fill="#e0e7ff" stroke="#6366f1"/>
+  <text x="979" y="364" text-anchor="middle" class="lbl">Fixtures (DI)</text>
+  <text x="979" y="386" text-anchor="middle" class="lbls">auth fixture (from the</text>
+  <text x="979" y="401" text-anchor="middle" class="lbls">discovered login flow),</text>
+  <text x="979" y="416" text-anchor="middle" class="lbls">API-seeding fixtures</text>
+  <text x="979" y="438" text-anchor="middle" class="lbls">(from observed</text>
+  <text x="979" y="453" text-anchor="middle" class="lbls">endpoints)</text>
+
+  <rect x="1120" y="340" width="284" height="128" rx="9" fill="#e0e7ff" stroke="#6366f1"/>
+  <text x="1262" y="364" text-anchor="middle" class="lbl">Data factories</text>
+  <text x="1262" y="386" text-anchor="middle" class="lbls">builders for account,</text>
+  <text x="1262" y="401" text-anchor="middle" class="lbls">portfolio, order — from</text>
+  <text x="1262" y="416" text-anchor="middle" class="lbls">observed required fields</text>
+  <text x="1262" y="438" text-anchor="middle" class="lbls">(the test-data /</text>
+  <text x="1262" y="453" text-anchor="middle" class="lbls">state control plane)</text>
+
+  <!-- ============ PHASE 2: PILOT ============ -->
+  <rect x="40" y="506" width="660" height="150" rx="14" fill="#eef2ff" stroke="#c7d2fe"/>
+  <rect x="56" y="520" width="360" height="22" rx="11" fill="#6366f1"/>
+  <text x="68" y="536" class="pill">PHASE 2 — PILOT / VERTICAL SLICE  ·  prove the foundation holds</text>
+  <rect x="56" y="556" width="300" height="84" rx="9" fill="#e0e7ff" stroke="#6366f1"/>
+  <text x="206" y="582" text-anchor="middle" class="lbl">Author 3–5 journeys</text>
+  <text x="206" y="604" text-anchor="middle" class="lbls">USING the scaffolding</text>
+  <text x="206" y="620" text-anchor="middle" class="lbls">(authoring agent + critic)</text>
+  <rect x="372" y="556" width="312" height="84" rx="9" fill="#e0e7ff" stroke="#6366f1"/>
+  <text x="528" y="582" text-anchor="middle" class="lbl">Verify &amp; self-heal</text>
+  <text x="528" y="604" text-anchor="middle" class="lbls">run against seeded state;</text>
+  <text x="528" y="620" text-anchor="middle" class="lbls">does the framework actually work?</text>
+
+  <!-- ============ PHASE 3: CONSOLIDATION ============ -->
+  <rect x="740" y="506" width="680" height="150" rx="14" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <rect x="756" y="520" width="430" height="22" rx="11" fill="#475569"/>
+  <text x="768" y="536" class="pill">PHASE 3 — CONSOLIDATION  ·  bounded, human-supervised refactor</text>
+  <rect x="756" y="556" width="310" height="84" rx="9" fill="#fff" stroke="#94a3b8"/>
+  <text x="911" y="582" text-anchor="middle" class="lbl">Extract from repetition</text>
+  <text x="911" y="604" text-anchor="middle" class="lbls">inline steps seen 3× →</text>
+  <text x="911" y="620" text-anchor="middle" class="lbls">page-object methods (rule of three)</text>
+  <rect x="1082" y="556" width="322" height="84" rx="9" fill="#fff" stroke="#94a3b8"/>
+  <text x="1243" y="582" text-anchor="middle" class="lbl">De-dupe &amp; tidy</text>
+  <text x="1243" y="604" text-anchor="middle" class="lbls">merge duplicate locators,</text>
+  <text x="1243" y="620" text-anchor="middle" class="lbls">kill god-objects (agents weak at this)</text>
+
+  <!-- ============ HEAVY HUMAN GATE ============ -->
+  <rect x="300" y="700" width="860" height="118" rx="14" fill="#fef9c3" stroke="#ca8a04" stroke-width="2.5"/>
+  <text x="730" y="732" text-anchor="middle" class="lbl">HEAVY ONE-TIME HUMAN GATE — review the FOUNDATION</text>
+  <text x="730" y="758" text-anchor="middle" class="lbls">locator contract · page-object structure · fixtures · factories  —  this is the most important review in the system: everything inherits it</text>
+  <text x="730" y="780" text-anchor="middle" class="lbls">also: hand the testability report to the frontend team (data-testid / label changes)</text>
+  <text x="730" y="802" text-anchor="middle" class="note">reviewing the framework once, hard, is far cheaper than re-reviewing freeform selectors in every test forever</text>
+
+  <!-- ============ STEADY STATE ============ -->
+  <rect x="300" y="852" width="860" height="150" rx="14" fill="#ecfdf5" stroke="#a7f3d0"/>
+  <rect x="316" y="866" width="430" height="22" rx="11" fill="#059669"/>
+  <text x="328" y="882" class="pill">PHASE 4 — STEADY STATE  ·  cold start is over</text>
+  <rect x="316" y="902" width="380" height="84" rx="9" fill="#d1fae5" stroke="#059669"/>
+  <text x="506" y="928" text-anchor="middle" class="lbl">Approved, stable foundation</text>
+  <text x="506" y="950" text-anchor="middle" class="lbls">human-owned POM / fixtures / factories</text>
+  <text x="506" y="966" text-anchor="middle" class="lbls">rarely changes; self-heal acts here (O(1) rot)</text>
+  <rect x="716" y="902" width="428" height="84" rx="9" fill="#d1fae5" stroke="#059669"/>
+  <text x="930" y="928" text-anchor="middle" class="lbl">Agent authors per-scenario bodies on top</text>
+  <text x="930" y="950" text-anchor="middle" class="lbls">→ the multi-scenario architecture (diagram 2)</text>
+  <text x="930" y="966" text-anchor="middle" class="lbls">light reviews: tests just compose approved building blocks</text>
+
+  <!-- ===== EDGES ===== -->
+  <path class="e" d="M260,146 L298,160" marker-end="url(#a)"/>
+  <path class="e" d="M730,270 L730,288" marker-end="url(#a)"/>
+  <text x="740" y="284" class="lbls">app model feeds the architect</text>
+  <path class="e" d="M730,486 C600,496 420,498 360,504" marker-end="url(#a)"/>
+  <text x="470" y="500" class="lbls">scaffold</text>
+  <!-- pilot -> consolidation -->
+  <path class="e" d="M700,598 L738,598" marker-end="url(#a)"/>
+  <!-- pilot/consolidation -> gate -->
+  <path class="ey" d="M380,656 C420,680 520,692 600,700" marker-end="url(#ay)"/>
+  <path class="ey" d="M1080,656 C1000,682 920,692 860,700" marker-end="url(#ay)"/>
+  <!-- gate -> steady -->
+  <path class="e" d="M730,818 L730,850" marker-end="url(#a)"/>
+  <!-- feedback loop: pilot failures refine scaffold (red, dashed) -->
+  <path class="er" d="M372,640 C300,690 250,560 250,500 C250,440 280,420 318,406" marker-end="url(#ar)" stroke-dasharray="6,4"/>
+  <text x="120" y="560" class="lbls" fill="#b91c1c">pilot failures →</text>
+  <text x="120" y="576" class="lbls" fill="#b91c1c">refine the scaffold</text>
+  <text x="120" y="592" class="note" fill="#b91c1c">(iterate, don't perfect up front)</text>
+
+  <!-- legend -->
+  <rect x="40" y="1030" width="1380" height="120" rx="12" fill="#fff" stroke="#cbd5e1"/>
+  <text x="60" y="1056" class="lbl">Key ideas</text>
+  <text x="60" y="1080" class="lbls">• Cold start is a DISTINCT pipeline (Surveyor + Architect roles) — not the steady-state authoring agent.</text>
+  <text x="60" y="1100" class="lbls">• Build bottom-up: explore → pilot → EXTRACT the POM from real repetition (rule of three). Avoids god-objects &amp; premature abstraction.</text>
+  <text x="60" y="1120" class="lbls">• The foundation gets ONE heavy human review; after that, reviews are light. The agent's hard limit: it proposes testability, it can't create it.</text>
+  <text x="60" y="1140" class="lbls">• Most human-intensive mode of the whole system — value is "weeks of setup → a day of drafting + a day of review," not full autonomy.</text>
+</svg>

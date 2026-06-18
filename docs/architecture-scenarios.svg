@@ -1,0 +1,237 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1460" height="1140" viewBox="0 0 1460 1140" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,3 L0,6 Z" fill="#334155"/></marker>
+    <marker id="at" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,3 L0,6 Z" fill="#0d9488"/></marker>
+    <marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,3 L0,6 Z" fill="#b91c1c"/></marker>
+    <style>
+      .title{font-size:25px;font-weight:700;fill:#0f172a}
+      .sub{font-size:13.5px;fill:#475569}
+      .pill{font-size:11px;font-weight:700;fill:#fff}
+      .lbl{font-size:15px;font-weight:600;fill:#0f172a}
+      .lbls{font-size:11px;fill:#475569}
+      .chip{font-size:11px;font-weight:600;fill:#3730a3}
+      .e{stroke:#334155;stroke-width:2;fill:none}
+      .et{stroke:#0d9488;stroke-width:2;fill:none}
+      .er{stroke:#b91c1c;stroke-width:2;fill:none}
+    </style>
+  </defs>
+  <rect width="1460" height="1140" fill="#f8fafc"/>
+  <text x="40" y="46" class="title">agentic-qa-harness — multi-scenario investment-platform automation</text>
+  <text x="40" y="72" class="sub">One feature → many scenarios, most NOT happy path. Each scenario needs a reproducible precondition/state — supplied by a test-data &amp; state control plane.</text>
+
+  <!-- ============ A: SCENARIO MODEL ============ -->
+  <rect x="36" y="92" width="1388" height="196" rx="14" fill="#eef2ff" stroke="#c7d2fe"/>
+  <rect x="52" y="106" width="430" height="22" rx="11" fill="#6366f1"/>
+  <text x="64" y="122" class="pill">SCENARIO MODEL  ·  one user story expands into many scenario classes</text>
+
+  <!-- 6 domain cards -->
+  <!-- card template width 214, gap 14, start 60 => 60,288,516,744,972,1200 -->
+  <g>
+    <rect x="60"  y="142" width="214" height="86" rx="9" fill="#fff" stroke="#94a3b8"/>
+    <text x="167" y="164" text-anchor="middle" class="lbl">Account &amp; Auth</text>
+    <text x="167" y="184" text-anchor="middle" class="lbls">signup · login · 2FA</text>
+    <text x="167" y="199" text-anchor="middle" class="lbls">locked acct · invalid token</text>
+    <text x="167" y="214" text-anchor="middle" class="lbls">expired session</text>
+  </g>
+  <g>
+    <rect x="288" y="142" width="214" height="86" rx="9" fill="#fff" stroke="#94a3b8"/>
+    <text x="395" y="164" text-anchor="middle" class="lbl">Portfolio &amp; Holdings</text>
+    <text x="395" y="184" text-anchor="middle" class="lbls">empty · diversified</text>
+    <text x="395" y="199" text-anchor="middle" class="lbls">CSV import · malformed row</text>
+    <text x="395" y="214" text-anchor="middle" class="lbls">duplicate symbol</text>
+  </g>
+  <g>
+    <rect x="516" y="142" width="214" height="86" rx="9" fill="#fff" stroke="#94a3b8"/>
+    <text x="623" y="164" text-anchor="middle" class="lbl">Transactions</text>
+    <text x="623" y="184" text-anchor="middle" class="lbls">buy / sell · fractional</text>
+    <text x="623" y="199" text-anchor="middle" class="lbls">insufficient funds</text>
+    <text x="623" y="214" text-anchor="middle" class="lbls">market closed · bad ticker</text>
+  </g>
+  <g>
+    <rect x="744" y="142" width="214" height="86" rx="9" fill="#fff" stroke="#94a3b8"/>
+    <text x="851" y="164" text-anchor="middle" class="lbl">Allocations / Rebalance</text>
+    <text x="851" y="184" text-anchor="middle" class="lbls">target drift</text>
+    <text x="851" y="199" text-anchor="middle" class="lbls">over-allocation</text>
+    <text x="851" y="214" text-anchor="middle" class="lbls">zero-weight asset</text>
+  </g>
+  <g>
+    <rect x="972" y="142" width="214" height="86" rx="9" fill="#fff" stroke="#94a3b8"/>
+    <text x="1079" y="164" text-anchor="middle" class="lbl">Market Data &amp; FX</text>
+    <text x="1079" y="184" text-anchor="middle" class="lbls">live · stale feed</text>
+    <text x="1079" y="199" text-anchor="middle" class="lbls">missing symbol</text>
+    <text x="1079" y="214" text-anchor="middle" class="lbls">multi-currency / FX</text>
+  </g>
+  <g>
+    <rect x="1200" y="142" width="214" height="86" rx="9" fill="#fff" stroke="#94a3b8"/>
+    <text x="1307" y="164" text-anchor="middle" class="lbl">Reporting &amp; Export</text>
+    <text x="1307" y="184" text-anchor="middle" class="lbls">PDF · empty range</text>
+    <text x="1307" y="199" text-anchor="middle" class="lbls">large dataset</text>
+    <text x="1307" y="214" text-anchor="middle" class="lbls">role-restricted view</text>
+  </g>
+
+  <!-- scenario-class chips -->
+  <text x="60" y="258" class="lbls" font-weight="700">SCENARIO CLASSES applied to every feature:</text>
+  <g>
+    <rect x="350" y="245" width="92"  height="20" rx="10" fill="#e0e7ff" stroke="#a5b4fc"/><text x="396" y="259" text-anchor="middle" class="chip">Happy path</text>
+    <rect x="452" y="245" width="80"  height="20" rx="10" fill="#e0e7ff" stroke="#a5b4fc"/><text x="492" y="259" text-anchor="middle" class="chip">Negative</text>
+    <rect x="542" y="245" width="84"  height="20" rx="10" fill="#e0e7ff" stroke="#a5b4fc"/><text x="584" y="259" text-anchor="middle" class="chip">Boundary</text>
+    <rect x="636" y="245" width="118" height="20" rx="10" fill="#e0e7ff" stroke="#a5b4fc"/><text x="695" y="259" text-anchor="middle" class="chip">Error / Recovery</text>
+    <rect x="764" y="245" width="124" height="20" rx="10" fill="#e0e7ff" stroke="#a5b4fc"/><text x="826" y="259" text-anchor="middle" class="chip">Permissions / Roles</text>
+    <rect x="898" y="245" width="110" height="20" rx="10" fill="#e0e7ff" stroke="#a5b4fc"/><text x="953" y="259" text-anchor="middle" class="chip">Cross-feature</text>
+    <rect x="1018" y="245" width="120" height="20" rx="10" fill="#e0e7ff" stroke="#a5b4fc"/><text x="1078" y="259" text-anchor="middle" class="chip">Concurrency / Race</text>
+  </g>
+
+  <!-- ============ B: TEST DATA & STATE CONTROL PLANE ============ -->
+  <rect x="36" y="306" width="1388" height="150" rx="14" fill="#ecfeff" stroke="#a5f3fc"/>
+  <rect x="52" y="320" width="640" height="22" rx="11" fill="#0d9488"/>
+  <text x="64" y="336" class="pill">TEST DATA &amp; STATE CONTROL PLANE  ·  reproducible precondition for every non-happy-path scenario</text>
+
+  <rect x="60"  y="356" width="320" height="80" rx="9" fill="#fff" stroke="#0d9488"/>
+  <text x="220" y="380" text-anchor="middle" class="lbl">Identity / Account factory</text>
+  <text x="220" y="400" text-anchor="middle" class="lbls">verified · KYC-pending · suspended</text>
+  <text x="220" y="416" text-anchor="middle" class="lbls">locked · multi-currency base</text>
+
+  <rect x="396" y="356" width="320" height="80" rx="9" fill="#fff" stroke="#0d9488"/>
+  <text x="556" y="380" text-anchor="middle" class="lbl">Portfolio &amp; holdings seeder</text>
+  <text x="556" y="400" text-anchor="middle" class="lbls">empty · single · diversified</text>
+  <text x="556" y="416" text-anchor="middle" class="lbls">leveraged · pending trades</text>
+
+  <rect x="732" y="356" width="332" height="80" rx="9" fill="#fff" stroke="#0d9488"/>
+  <text x="898" y="380" text-anchor="middle" class="lbl">Market data &amp; FX control</text>
+  <text x="898" y="400" text-anchor="middle" class="lbls">pinned prices · stale feed</text>
+  <text x="898" y="416" text-anchor="middle" class="lbls">missing symbol · FX rate table</text>
+
+  <rect x="1080" y="356" width="334" height="80" rx="9" fill="#fff" stroke="#0d9488"/>
+  <text x="1247" y="380" text-anchor="middle" class="lbl">Clock &amp; session control</text>
+  <text x="1247" y="400" text-anchor="middle" class="lbls">market open / closed</text>
+  <text x="1247" y="416" text-anchor="middle" class="lbls">settlement date · historical replay</text>
+
+  <!-- ============ C: AGENT AUTHORING PLANE ============ -->
+  <rect x="36" y="476" width="940" height="214" rx="14" fill="#eef2ff" stroke="#c7d2fe"/>
+  <rect x="52" y="490" width="420" height="22" rx="11" fill="#6366f1"/>
+  <text x="64" y="506" class="pill">AGENT AUTHORING PLANE  ·  LLM runs at authoring time only</text>
+
+  <rect x="60"  y="528" width="270" height="92" rx="9" fill="#e0e7ff" stroke="#6366f1"/>
+  <text x="195" y="556" text-anchor="middle" class="lbl">Authoring agent</text>
+  <text x="195" y="576" text-anchor="middle" class="lbls">per scenario: drive to the required</text>
+  <text x="195" y="591" text-anchor="middle" class="lbls">precondition, walk the path,</text>
+  <text x="195" y="606" text-anchor="middle" class="lbls">ground locators in a11y snapshots</text>
+
+  <rect x="346" y="528" width="270" height="92" rx="9" fill="#e0e7ff" stroke="#6366f1"/>
+  <text x="481" y="556" text-anchor="middle" class="lbl">Critic agent</text>
+  <text x="481" y="576" text-anchor="middle" class="lbls">enforces coverage across ALL</text>
+  <text x="481" y="591" text-anchor="middle" class="lbls">scenario classes — not just happy</text>
+  <text x="481" y="606" text-anchor="middle" class="lbls">path; flags missing negatives</text>
+
+  <rect x="632" y="528" width="328" height="92" rx="9" fill="#e0e7ff" stroke="#6366f1"/>
+  <text x="796" y="556" text-anchor="middle" class="lbl">Verify &amp; self-heal</text>
+  <text x="796" y="576" text-anchor="middle" class="lbls">runs draft against seeded state,</text>
+  <text x="796" y="591" text-anchor="middle" class="lbls">feeds failures back; distinguishes</text>
+  <text x="796" y="606" text-anchor="middle" class="lbls">"my spec is wrong" vs "data wasn't set up"</text>
+
+  <text x="60" y="652" class="lbls" font-weight="700">Each scenario draft pins the data-plane preset it requires, so the emitted spec sets up its own state and stays independent &amp; deterministic.</text>
+  <text x="60" y="672" class="lbls">Agents consume scenarios (A) + presets (B); explore the live platform via Playwright MCP.</text>
+
+  <!-- shared services (right of C) -->
+  <rect x="996" y="476" width="428" height="214" rx="14" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="1014" y="500" class="lbl">Shared services</text>
+  <rect x="1014" y="512" width="392" height="48" rx="8" fill="#fff" stroke="#94a3b8"/>
+  <text x="1210" y="532" text-anchor="middle" class="lbl">Model layer — Anthropic SDK, tool-use loop</text>
+  <text x="1210" y="550" text-anchor="middle" class="lbls">model = ANTHROPIC_MODEL (config, not code)</text>
+  <rect x="1014" y="568" width="392" height="48" rx="8" fill="#fff" stroke="#94a3b8"/>
+  <text x="1210" y="588" text-anchor="middle" class="lbl">Playwright MCP — browser + a11y snapshots</text>
+  <text x="1210" y="606" text-anchor="middle" class="lbls">guard loop · context pruning · snapshot clamp</text>
+  <rect x="1014" y="624" width="392" height="50" rx="8" fill="#fff7ed" stroke="#fb923c"/>
+  <text x="1210" y="645" text-anchor="middle" class="lbl">SUT — investment platform (Ghostfolio)</text>
+  <text x="1210" y="662" text-anchor="middle" class="lbls">app + Postgres + Redis · data plane seeds it</text>
+
+  <!-- ============ proposed + human gate ============ -->
+  <rect x="36" y="712" width="640" height="74" rx="11" fill="#fff" stroke="#94a3b8"/>
+  <text x="356" y="740" text-anchor="middle" class="lbl">tests/proposed/  (agent output)</text>
+  <text x="356" y="762" text-anchor="middle" class="lbls">scenario spec + coverage map (criterion × scenario class) + data preset reference</text>
+
+  <rect x="700" y="708" width="276" height="82" rx="11" fill="#fef9c3" stroke="#ca8a04" stroke-width="2"/>
+  <text x="838" y="738" text-anchor="middle" class="lbl">Human review gate</text>
+  <text x="838" y="760" text-anchor="middle" class="lbls">the one required human step:</text>
+  <text x="838" y="775" text-anchor="middle" class="lbls">checks scenario coverage, then approves</text>
+
+  <!-- ============ E: APPROVED SUITE ============ -->
+  <rect x="36" y="812" width="940" height="92" rx="12" fill="#fff" stroke="#94a3b8"/>
+  <text x="506" y="838" text-anchor="middle" class="lbl">tests/approved/  — organized by domain × scenario class, tagged</text>
+  <text x="506" y="862" text-anchor="middle" class="lbls">auth/ · portfolio/ · transactions/ · allocations/ · marketdata/ · reporting/</text>
+  <text x="506" y="882" text-anchor="middle" class="lbls">tags: @smoke @happy @negative @boundary @error @permissions @cross @quarantine</text>
+
+  <!-- ============ F: TIERED DETERMINISTIC GATE ============ -->
+  <rect x="36" y="924" width="940" height="180" rx="14" fill="#ecfdf5" stroke="#a7f3d0"/>
+  <rect x="52" y="938" width="420" height="22" rx="11" fill="#059669"/>
+  <text x="64" y="954" class="pill">DETERMINISTIC DEPLOY GATE  ·  NO LLM  ·  tiered runs</text>
+
+  <rect x="60"  y="974" width="430" height="112" rx="9" fill="#d1fae5" stroke="#059669"/>
+  <text x="275" y="1000" text-anchor="middle" class="lbl">On PR / push — fast lane</text>
+  <text x="275" y="1022" text-anchor="middle" class="lbls">@smoke + critical happy paths across domains</text>
+  <text x="275" y="1040" text-anchor="middle" class="lbls">sharded · minutes · blocks the merge</text>
+  <text x="275" y="1062" text-anchor="middle" class="lbls">the daily-deploy gate</text>
+
+  <rect x="506" y="974" width="454" height="112" rx="9" fill="#d1fae5" stroke="#059669"/>
+  <text x="733" y="1000" text-anchor="middle" class="lbl">Nightly — full scenario matrix</text>
+  <text x="733" y="1022" text-anchor="middle" class="lbls">every class: negative · boundary · error · permissions · cross</text>
+  <text x="733" y="1040" text-anchor="middle" class="lbls">sharded by domain · @quarantine lane runs non-blocking</text>
+  <text x="733" y="1062" text-anchor="middle" class="lbls">$0 tokens · deterministic · trend dashboard</text>
+
+  <!-- ============ G: TRIAGE ============ -->
+  <rect x="996" y="812" width="428" height="292" rx="14" fill="#fee2e2" stroke="#b91c1c"/>
+  <rect x="1012" y="826" width="300" height="22" rx="11" fill="#b91c1c"/>
+  <text x="1024" y="842" class="pill">FAILURE TRIAGE  ·  domain-aware, on red CI</text>
+  <text x="1210" y="868" text-anchor="middle" class="lbls">reproduces the step on the live platform (LLM + MCP), classifies:</text>
+
+  <rect x="1012" y="880" width="396" height="44" rx="8" fill="#fff" stroke="#94a3b8"/>
+  <text x="1024" y="900" class="lbl">Product bug</text>
+  <text x="1024" y="917" class="lbls">app broken (e.g. sell allowed with insufficient funds) → issue draft</text>
+
+  <rect x="1012" y="930" width="396" height="44" rx="8" fill="#fff" stroke="#94a3b8"/>
+  <text x="1024" y="950" class="lbl">Test rot</text>
+  <text x="1024" y="967" class="lbls">UI changed but app works → patched spec (PR back through gate)</text>
+
+  <rect x="1012" y="980" width="396" height="44" rx="8" fill="#fff" stroke="#94a3b8"/>
+  <text x="1024" y="1000" class="lbl">Flake</text>
+  <text x="1024" y="1017" class="lbls">timing / SPA race → rerun · move to @quarantine</text>
+
+  <rect x="1012" y="1030" width="396" height="58" rx="8" fill="#fff" stroke="#0d9488"/>
+  <text x="1024" y="1050" class="lbl" fill="#0f766e">Data / precondition gap  (new for multi-scenario)</text>
+  <text x="1024" y="1067" class="lbls">required state never set up (stale FX, missing seed)</text>
+  <text x="1024" y="1082" class="lbls">→ fix the data-plane preset, not the spec</text>
+
+  <!-- ===== EDGES ===== -->
+  <!-- A -> C (scenarios) -->
+  <path class="e" d="M300,288 C300,360 220,440 195,526" marker-end="url(#a)"/>
+  <text x="120" y="500" class="lbls">scenarios</text>
+  <!-- B -> C (presets) -->
+  <path class="et" d="M380,436 C400,460 420,500 460,526" marker-end="url(#at)"/>
+  <text x="392" y="470" class="lbls" fill="#0f766e">presets</text>
+  <!-- B -> F (data plane also drives execution state) -->
+  <path class="et" d="M1247,436 C1247,640 1100,720 980,985" marker-end="url(#at)"/>
+  <text x="1255" y="540" class="lbls" fill="#0f766e">seeds CI state</text>
+  <!-- author->critic->verify -->
+  <path class="e" d="M330,574 L344,574" marker-end="url(#a)"/>
+  <path class="e" d="M616,574 L630,574" marker-end="url(#a)"/>
+  <!-- C uses shared services -->
+  <path class="e" d="M960,560 L994,560" marker-end="url(#a)"/>
+  <!-- verify -> proposed -->
+  <path class="e" d="M500,620 C460,670 420,690 380,710" marker-end="url(#a)"/>
+  <!-- proposed -> gate -->
+  <path class="e" d="M676,749 L698,749" marker-end="url(#a)"/>
+  <!-- gate -> approved -->
+  <path class="e" d="M838,790 C700,800 620,805 560,810" marker-end="url(#a)"/>
+  <text x="640" y="805" class="lbls">promote</text>
+  <!-- approved -> tiered gate -->
+  <path class="e" d="M506,904 L506,922" marker-end="url(#a)"/>
+  <!-- CI fail -> triage -->
+  <path class="er" d="M960,1030 C1000,1010 1000,960 1010,948" marker-end="url(#ar)"/>
+  <text x="966" y="1000" class="lbls" fill="#b91c1c">red CI</text>
+  <!-- triage rot patch -> back to proposed/gate (dashed) -->
+  <path class="e" d="M1012,952 C700,952 360,900 356,788" marker-end="url(#a)" stroke-dasharray="5,4"/>
+  <text x="690" y="930" class="lbls">test-rot patch re-enters the gate</text>
+
+  <!-- legend -->
+  <text x="40" y="1128" class="lbls">Indigo = LLM agent (authoring time) · Teal = test-data/state control plane · Green = deterministic CI gate (no LLM) · Yellow = human gate · Red = triage</text>
+</svg>

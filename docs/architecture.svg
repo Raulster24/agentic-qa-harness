@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="840" viewBox="0 0 1280 840" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#334155"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#b91c1c"/>
+    </marker>
+    <style>
+      .box   { rx:10; ry:10; stroke-width:1.5; }
+      .title { font-size:24px; font-weight:700; fill:#0f172a; }
+      .sub   { font-size:13px; fill:#475569; }
+      .lbl   { font-size:15px; font-weight:600; fill:#0f172a; }
+      .lbls  { font-size:11.5px; fill:#475569; }
+      .edge  { stroke:#334155; stroke-width:2; fill:none; }
+      .edgeR { stroke:#b91c1c; stroke-width:2; fill:none; }
+      .zone  { font-size:13px; font-weight:700; letter-spacing:.5px; }
+      .pill  { font-size:11px; font-weight:600; }
+    </style>
+  </defs>
+
+  <rect width="1280" height="840" fill="#f8fafc"/>
+  <text x="40" y="48" class="title">agentic-qa-harness — architecture</text>
+  <text x="40" y="72" class="sub">Agent-authored, human-gated Playwright regression testing. LLM agents author/triage; CI runs deterministic specs (no LLM in the hot path).</text>
+
+  <!-- ===== ZONE 1: Agent authoring plane (LLM) ===== -->
+  <rect x="36" y="96" width="800" height="448" rx="14" fill="#eef2ff" stroke="#c7d2fe" stroke-width="1.5"/>
+  <rect x="52" y="110" width="270" height="22" rx="11" fill="#6366f1"/>
+  <text x="64" y="126" class="pill" fill="#ffffff">AGENT AUTHORING PLANE  ·  LLM RUNS HERE</text>
+
+  <!-- Input: stories -->
+  <rect class="box" x="60" y="160" width="150" height="74" fill="#ffffff" stroke="#94a3b8"/>
+  <text x="135" y="190" text-anchor="middle" class="lbl">stories/*.md</text>
+  <text x="135" y="210" text-anchor="middle" class="lbls">user story +</text>
+  <text x="135" y="225" text-anchor="middle" class="lbls">acceptance criteria</text>
+
+  <!-- Authoring agent -->
+  <rect class="box" x="252" y="150" width="174" height="94" fill="#e0e7ff" stroke="#6366f1"/>
+  <text x="339" y="178" text-anchor="middle" class="lbl">Authoring agent</text>
+  <text x="339" y="198" text-anchor="middle" class="lbls">explores live app,</text>
+  <text x="339" y="213" text-anchor="middle" class="lbls">grounds locators in</text>
+  <text x="339" y="228" text-anchor="middle" class="lbls">a11y snapshots</text>
+
+  <!-- Critic agent -->
+  <rect class="box" x="468" y="150" width="150" height="94" fill="#e0e7ff" stroke="#6366f1"/>
+  <text x="543" y="183" text-anchor="middle" class="lbl">Critic agent</text>
+  <text x="543" y="203" text-anchor="middle" class="lbls">reviews coverage,</text>
+  <text x="543" y="218" text-anchor="middle" class="lbls">locator quality</text>
+
+  <!-- Verify & self-heal -->
+  <rect class="box" x="660" y="150" width="160" height="94" fill="#e0e7ff" stroke="#6366f1"/>
+  <text x="740" y="178" text-anchor="middle" class="lbl">Verify &amp;</text>
+  <text x="740" y="196" text-anchor="middle" class="lbl">self-heal</text>
+  <text x="740" y="216" text-anchor="middle" class="lbls">runs draft, feeds</text>
+  <text x="740" y="231" text-anchor="middle" class="lbls">failures back</text>
+
+  <!-- shared services row -->
+  <rect class="box" x="252" y="300" width="174" height="86" fill="#ffffff" stroke="#94a3b8"/>
+  <text x="339" y="328" text-anchor="middle" class="lbl">Model layer</text>
+  <text x="339" y="348" text-anchor="middle" class="lbls">Anthropic SDK,</text>
+  <text x="339" y="363" text-anchor="middle" class="lbls">manual tool-use loop</text>
+  <text x="339" y="378" text-anchor="middle" class="lbls">(ANTHROPIC_MODEL)</text>
+
+  <rect class="box" x="468" y="300" width="150" height="86" fill="#ffffff" stroke="#94a3b8"/>
+  <text x="543" y="333" text-anchor="middle" class="lbl">Playwright MCP</text>
+  <text x="543" y="353" text-anchor="middle" class="lbls">browser tools,</text>
+  <text x="543" y="368" text-anchor="middle" class="lbls">a11y snapshots</text>
+
+  <rect class="box" x="660" y="300" width="160" height="86" fill="#fff7ed" stroke="#fb923c"/>
+  <text x="740" y="328" text-anchor="middle" class="lbl">System under test</text>
+  <text x="740" y="348" text-anchor="middle" class="lbls">Ghostfolio</text>
+  <text x="740" y="363" text-anchor="middle" class="lbls">(docker compose:</text>
+  <text x="740" y="378" text-anchor="middle" class="lbls">app + pg + redis)</text>
+
+  <!-- proposed artifacts -->
+  <rect class="box" x="252" y="430" width="366" height="86" fill="#ffffff" stroke="#94a3b8"/>
+  <text x="435" y="458" text-anchor="middle" class="lbl">tests/proposed/  (agent output)</text>
+  <text x="435" y="480" text-anchor="middle" class="lbls">deterministic .spec.ts  +  criterion→test coverage map</text>
+  <text x="435" y="498" text-anchor="middle" class="lbls">agents never write to approved/</text>
+
+  <!-- edges within zone 1 -->
+  <path class="edge" d="M210,197 L250,197" marker-end="url(#arrow)"/>
+  <path class="edge" d="M426,197 L466,197" marker-end="url(#arrow)"/>
+  <path class="edge" d="M618,197 L658,197" marker-end="url(#arrow)"/>
+  <!-- agents use model + mcp -->
+  <path class="edge" d="M339,244 L339,298" marker-end="url(#arrow)"/>
+  <path class="edge" d="M543,244 L543,298" marker-end="url(#arrow)"/>
+  <!-- mcp drives sut -->
+  <path class="edge" d="M618,343 L658,343" marker-end="url(#arrow)"/>
+  <!-- verify uses sut (up) -->
+  <path class="edge" d="M740,300 L740,246" marker-end="url(#arrow)"/>
+  <!-- verify -> proposed -->
+  <path class="edge" d="M740,244 C740,410 620,420 560,428" marker-end="url(#arrow)"/>
+  <text x="600" y="420" class="lbls">emit spec</text>
+
+  <!-- ===== HUMAN GATE ===== -->
+  <rect class="box" x="884" y="170" width="170" height="120" fill="#fef9c3" stroke="#ca8a04" stroke-width="2"/>
+  <text x="969" y="205" text-anchor="middle" class="lbl">Human review</text>
+  <text x="969" y="225" text-anchor="middle" class="lbl">gate</text>
+  <text x="969" y="248" text-anchor="middle" class="lbls">the one required</text>
+  <text x="969" y="263" text-anchor="middle" class="lbls">human step:</text>
+  <text x="969" y="278" text-anchor="middle" class="lbls">approve promotion</text>
+
+  <path class="edge" d="M618,460 C760,460 800,300 882,255" marker-end="url(#arrow)"/>
+  <text x="690" y="350" class="lbls">review draft + coverage</text>
+
+  <!-- ===== ZONE 2: Deterministic deploy gate (no LLM) ===== -->
+  <rect x="884" y="320" width="360" height="224" rx="14" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1.5"/>
+  <rect x="900" y="334" width="300" height="22" rx="11" fill="#059669"/>
+  <text x="912" y="350" class="pill" fill="#ffffff">DEPLOY GATE  ·  NO LLM  ·  DETERMINISTIC</text>
+
+  <rect class="box" x="912" y="376" width="304" height="70" fill="#ffffff" stroke="#94a3b8"/>
+  <text x="1064" y="404" text-anchor="middle" class="lbl">tests/approved/</text>
+  <text x="1064" y="426" text-anchor="middle" class="lbls">human-approved specs CI runs</text>
+
+  <rect class="box" x="912" y="460" width="304" height="70" fill="#d1fae5" stroke="#059669"/>
+  <text x="1064" y="486" text-anchor="middle" class="lbl">CI regression gate</text>
+  <text x="1064" y="508" text-anchor="middle" class="lbls">sharded Playwright on PR + push · minutes · $0 tokens</text>
+
+  <path class="edge" d="M969,290 L1010,374" marker-end="url(#arrow)"/>
+  <text x="980" y="345" class="lbls">promote</text>
+  <path class="edge" d="M1064,446 L1064,458" marker-end="url(#arrow)"/>
+
+  <!-- ===== TRIAGE LOOP ===== -->
+  <rect class="box" x="430" y="600" width="240" height="100" fill="#fee2e2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="550" y="632" text-anchor="middle" class="lbl">Triage agent</text>
+  <text x="550" y="654" text-anchor="middle" class="lbls">reproduces failing step on</text>
+  <text x="550" y="670" text-anchor="middle" class="lbls">live app, classifies failure</text>
+  <text x="550" y="686" text-anchor="middle" class="lbls">(LLM + Playwright MCP)</text>
+
+  <!-- CI failure -> triage -->
+  <path class="edgeR" d="M912,512 C740,560 680,600 672,628" marker-end="url(#arrowRed)"/>
+  <text x="730" y="565" class="lbls" fill="#b91c1c">CI failure</text>
+
+  <!-- triage outputs -->
+  <rect class="box" x="60" y="592" width="200" height="44" fill="#ffffff" stroke="#94a3b8"/>
+  <text x="160" y="612" text-anchor="middle" class="lbl">Product bug</text>
+  <text x="160" y="628" text-anchor="middle" class="lbls">→ issue draft</text>
+
+  <rect class="box" x="60" y="646" width="200" height="44" fill="#ffffff" stroke="#94a3b8"/>
+  <text x="160" y="666" text-anchor="middle" class="lbl">Test rot</text>
+  <text x="160" y="682" text-anchor="middle" class="lbls">→ patched spec (PR)</text>
+
+  <rect class="box" x="60" y="700" width="200" height="44" fill="#ffffff" stroke="#94a3b8"/>
+  <text x="160" y="720" text-anchor="middle" class="lbl">Flake</text>
+  <text x="160" y="736" text-anchor="middle" class="lbls">→ rerun</text>
+
+  <path class="edgeR" d="M428,640 L262,615" marker-end="url(#arrowRed)"/>
+  <path class="edgeR" d="M428,655 L262,668" marker-end="url(#arrowRed)"/>
+  <path class="edgeR" d="M428,672 L262,718" marker-end="url(#arrowRed)"/>
+
+  <!-- rot patch re-enters human gate -->
+  <path class="edge" d="M160,646 C140,560 180,520 250,485" marker-end="url(#arrow)" stroke-dasharray="5,4"/>
+  <text x="70" y="556" class="lbls">patch re-enters proposed → gate</text>
+
+  <!-- legend -->
+  <rect x="884" y="600" width="360" height="144" rx="12" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="904" y="626" class="lbl">Legend</text>
+  <rect x="904" y="640" width="20" height="14" rx="3" fill="#e0e7ff" stroke="#6366f1"/>
+  <text x="934" y="652" class="lbls">LLM agent (authoring time only)</text>
+  <rect x="904" y="662" width="20" height="14" rx="3" fill="#d1fae5" stroke="#059669"/>
+  <text x="934" y="674" class="lbls">Deterministic CI gate — no LLM</text>
+  <rect x="904" y="684" width="20" height="14" rx="3" fill="#fef9c3" stroke="#ca8a04"/>
+  <text x="934" y="696" class="lbls">Human approval (the gate)</text>
+  <rect x="904" y="706" width="20" height="14" rx="3" fill="#fee2e2" stroke="#b91c1c"/>
+  <text x="934" y="718" class="lbls">Failure triage loop</text>
+  <line x1="904" y1="732" x2="924" y2="732" class="edge" stroke-dasharray="5,4"/>
+  <text x="934" y="736" class="lbls">self-healed patch back through the gate</text>
+</svg>
